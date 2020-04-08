@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swpu.cins.used_car_trade.dao.InsuranceOrderDao">
+
+    <resultMap type="com.swpu.cins.used_car_trade.entity.InsuranceOrder" id="InsuranceOrderMap">
+        <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+        <result property="openId" column="open_id" jdbcType="VARCHAR"/>
+        <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="vin" column="vin" jdbcType="VARCHAR"/>
+        <result property="payStatu" column="pay_statu" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="InsuranceOrderMap">
+        select
+          order_no, open_id, order_status, create_date, vin, pay_statu
+        from used_car_trade.insurance_order
+        where order_no = #{orderNo}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="InsuranceOrderMap">
+        select
+          order_no, open_id, order_status, create_date, vin, pay_statu
+        from used_car_trade.insurance_order
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="InsuranceOrderMap">
+        select
+          order_no, open_id, order_status, create_date, vin, pay_statu
+        from used_car_trade.insurance_order
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                and order_no = #{orderNo}
+            </if>
+            <if test="openId != null and openId != ''">
+                and open_id = #{openId}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="vin != null and vin != ''">
+                and vin = #{vin}
+            </if>
+            <if test="payStatu != null">
+                and pay_statu = #{payStatu}
+            </if>
+        </where>
+    </select>
+    <select id="queryByOpenIdAndVin" resultType="com.swpu.cins.used_car_trade.entity.InsuranceOrder">
+         select order_no, open_id, order_status, create_date, vin,pay_statu
+        from used_car_trade.insurance_order
+        where vin=#{vin} and open_id=#{openId}
+    </select>
+    <select id="queryAllOrderNo" resultType="com.swpu.cins.used_car_trade.entity.InsuranceOrder">
+        select order_no, open_id, order_status, create_date, vin,pay_statu
+        from used_car_trade.insurance_order
+        where open_id=#{openId} order by create_date desc
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderNo" useGeneratedKeys="true">
+        insert into used_car_trade.insurance_order(order_no,open_id, order_status, create_date, vin, pay_statu)
+        values (#{orderNo},#{openId}, #{orderStatus}, #{createDate}, #{vin}, #{payStatu})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update used_car_trade.insurance_order
+        <set>
+            <if test="openId != null and openId != ''">
+                open_id = #{openId},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="vin != null and vin != ''">
+                vin = #{vin},
+            </if>
+            <if test="payStatu != null">
+                pay_statu = #{payStatu},
+            </if>
+        </set>
+        where order_no = #{orderNo}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from used_car_trade.insurance_order where order_no = #{orderNo}
+    </delete>
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swpu.cins.used_car_trade.dao.UserDao">
+
+    <resultMap type="com.swpu.cins.used_car_trade.entity.User" id="UserMap">
+        <result property="openId" column="open_id" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="INTEGER"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="headImgUrl" column="head_img_url" jdbcType="VARCHAR"/>
+        <result property="balanceNum" column="balance_num" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          open_id, nick_name, sex, city, head_img_url, balance_num
+        from used_car_trade.user
+        where open_id = #{openId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          open_id, nick_name, sex, city, head_img_url, balance_num
+        from used_car_trade.user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+          open_id, nick_name, sex, city, head_img_url, balance_num
+        from used_car_trade.user
+        <where>
+            <if test="openId != null and openId != ''">
+                and open_id = #{openId}
+            </if>
+            <if test="nickName != null and nickName != ''">
+                and nick_name = #{nickName}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="headImgUrl != null and headImgUrl != ''">
+                and head_img_url = #{headImgUrl}
+            </if>
+            <if test="balanceNum != null">
+                and balance_num = #{balanceNum}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="openId" useGeneratedKeys="true">
+        insert into used_car_trade.user(open_id,nick_name, sex, city, head_img_url, balance_num)
+        values (#{openId},#{nickname}, #{sex}, #{city}, #{headImgUrl}, #{balanceNum})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update used_car_trade.user
+        <set>
+            <if test="nickname != null and nickname != ''">
+                nick_name = #{nickname},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="headImgUrl != null and headImgUrl != ''">
+                head_img_url = #{headImgUrl},
+            </if>
+            <if test="balanceNum != null">
+                balance_num = #{balanceNum},
+            </if>
+        </set>
+        where open_id = #{openId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from used_car_trade.user where open_id = #{openId}
+    </delete>
+
+</mapper>

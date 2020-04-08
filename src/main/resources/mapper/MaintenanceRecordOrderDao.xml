@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swpu.cins.used_car_trade.dao.MaintenanceRecordOrderDao">
+
+    <resultMap type="com.swpu.cins.used_car_trade.entity.MaintenanceRecordOrder" id="MaintenanceRecordOrderMap">
+        <result property="vin" column="vin" jdbcType="VARCHAR"/>
+        <result property="openId" column="open_id" jdbcType="VARCHAR"/>
+        <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+        <result property="brandName" column="brand_name" jdbcType="VARCHAR"/>
+        <result property="creatTime" column="creat_time" jdbcType="TIMESTAMP"/>
+        <result property="cost" column="cost" jdbcType="NUMERIC"/>
+        <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+        <result property="payStatu" column="pay_statu" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MaintenanceRecordOrderMap">
+        select
+          vin, open_id, order_no, brand_name, creat_time, cost, order_status, pay_statu
+        from used_car_trade.maintenance_record_order
+        where vin = #{vin}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MaintenanceRecordOrderMap">
+        select
+          vin, open_id, order_no, brand_name, creat_time, cost, order_status, pay_statu
+        from used_car_trade.maintenance_record_order
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MaintenanceRecordOrderMap">
+        select
+        vin, open_id, order_no, brand_name, creat_time, cost, order_status, pay_statu
+        from used_car_trade.maintenance_record_order
+        <where>
+            <if test="vin != null and vin != ''">
+                and vin = #{vin}
+            </if>
+            <if test="openId != null and openId != ''">
+                and open_id = #{openId}
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                and order_no = #{orderNo}
+            </if>
+            <if test="brandName != null and brandName != ''">
+                and brand_name = #{brandName}
+            </if>
+            <if test="creatTime != null">
+                and creat_time = #{creatTime}
+            </if>
+            <if test="cost != null">
+                and cost = #{cost}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus}
+            </if>
+            <if test="payStatu != null">
+                and pay_statu = #{payStatu}
+            </if>
+        </where>
+    </select>
+    <select id="queryByOpenIdAndVin" resultType="com.swpu.cins.used_car_trade.entity.MaintenanceRecordOrder">
+        select
+          vin, open_id, order_no, brand_name, creat_time, cost, order_status, pay_statu
+        from used_car_trade.maintenance_record_order
+        where open_id=#{openId} and vin =#{vin}
+    </select>
+    <select id="queryByOrderNoAndOpenId" resultType="com.swpu.cins.used_car_trade.entity.MaintenanceRecordOrder">
+        select
+          vin, open_id, order_no, brand_name, creat_time, cost, order_status,pay_statu
+        from used_car_trade.maintenance_record_order
+        where order_no = #{orderNo} and open_id=#{openId}
+    </select>
+    <select id="queryOrderByOpenId" resultType="com.swpu.cins.used_car_trade.vo.MaintenanceVO">
+        select
+        vin, open_id, order_no, brand_name, creat_time, cost, order_status,pay_statu
+        from used_car_trade.maintenance_record_order
+        where open_id = #{openId} order by creat_time desc
+    </select>
+    <select id="queryByOrderNo" resultType="com.swpu.cins.used_car_trade.entity.MaintenanceRecordOrder">
+        select
+        vin, open_id, order_no, brand_name, creat_time, cost, order_status,pay_statu
+        from used_car_trade.maintenance_record_order
+        where order_no = #{orderNo}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="vin" useGeneratedKeys="true">
+        insert into used_car_trade.maintenance_record_order(vin,open_id,order_no, brand_name, creat_time, cost, order_status,pay_statu)
+        values (#{vin},#{openId},#{orderNo}, #{brandName}, #{creatTime}, #{cost}, #{orderStatus},#{payStatu})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update used_car_trade.maintenance_record_order
+        <set>
+            <if test="orderNo != null and orderNo != ''">
+                order_no = #{orderNo},
+            </if>
+            <if test="brandName != null and brandName != ''">
+                brand_name = #{brandName},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime},
+            </if>
+            <if test="cost != null">
+                cost = #{cost},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+            <if test="payStatu != null">
+                pay_statu = #{payStatu}
+            </if>
+        </set>
+        where vin = #{vin}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from used_car_trade.maintenance_record_order where vin = #{vin}
+    </delete>
+
+</mapper>
