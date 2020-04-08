@@ -1,0 +1,48 @@
+server:
+  port: 8086
+
+spring:
+  datasource:
+    username: "******"
+    password: "******"
+    url: jdbc:mysql://127.0.0.1:3306/used_car_trade?useSSL=false&characterEncoding=utf-8&allowMultiQueries=true&allowPublicKeyRetrieval=true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.swpu.cins.used_car_trade.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+
+car:
+  partner_id: "蚂蚁女王id"
+  secret_key: "蚂蚁女王秘钥"
+  url:
+    insurance_url: "https://openapi.51ruiheng.com/InsurancesInfo/payInsuranceOrder"
+    insurance_get_report_url: "https://openapi.51ruiheng.com/InsurancesInfo/getInsuranceReport"
+
+
+    check_brand_url: "http://openapi.51ruiheng.com/CarJson/checkVin"
+    buy_report_url: "http://openapi.51ruiheng.com/CarJson/queryByVin"
+    get_report_url: "http://openapi.51ruiheng.com/CarJson/getMaintenanceData"
+
+    call_back_url: "回调地址"
+    call_back_url2: "回调地址"
+
+
+wx:
+  mp:
+    config:
+        appId: "wx3a910fb846133ff1"
+        secret: "****"
+        token: "cbf"
+        aesKey: "****"
+        mch_id: "商户号"
+        mch_key: "商户秘钥"
+        key_path: ""
+        notify_url: "回调地址"
+
+    template_id:
+        query_res: "XyQOAK9rU0Htb-LzQhPLL6oVkrhLtnDFk_6NECRhGx8"
+        top_up: "xZjKDVvIn0li5CkqocWodMM39qwONUlJ2X6pfjW8kvA"
+        have_refund: "mv9da8p0AnG7GBJhknC8MZCW3sX2n1gTrYiP_1EXEo4"
